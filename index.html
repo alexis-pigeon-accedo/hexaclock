@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Time Color</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic reset and full-screen setup */
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrollbars */
+            background-color: #000000; /* Pure black background */
+            display: flex;
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+            font-family: 'Roboto', sans-serif; /* Roboto font */
+        }
+
+        /* Time display container */
+        #time-display {
+            /* * Using viewport height (vh) unit for font size to make numbers fill the screen height.
+             * line-height: 1 ensures the line box height is close to the font size.
+             * Adjust font-size (e.g., 80vh, 85vh) if needed for perfect fit without overflow,
+             * especially with the added '#' character, as font metrics can vary.
+             * The number of characters is now 7 ('#HHMMSS'), so font size might need slight reduction
+             * compared to 6 characters to fit horizontally.
+             * However, the primary goal is full height, so we'll keep 90vh and let it overflow
+             * horizontally if necessary, or rely on browser's default text scaling.
+             * For better horizontal fit, a smaller vw unit or dynamic JS resizing would be needed.
+             * Given the prompt focuses on full height, 90vh is maintained.
+             */
+            font-size: 85vh; /* Slightly reduced to accommodate the '#' better, adjust as needed */
+            line-height: 1; /* Crucial for vertical filling */
+            font-weight: 700; /* Bold font weight */
+            text-align: center;
+            color: #FFFFFF; /* Initial color, will be updated by JS */
+            transition: color 0.5s ease-in-out; /* Smooth color transition */
+        }
+    </style>
+</head>
+<body>
+    <div id="time-display">#000000</div>
+
+    <script>
+        // Get the time display element
+        const timeDisplayElement = document.getElementById('time-display');
+
+        /**
+         * Pads a number with a leading zero if it's less than 10.
+         * @param {number} num - The number to pad.
+         * @returns {string} The padded number as a string.
+         */
+        function padZero(num) {
+            return num < 10 ? '0' + num : num.toString();
+        }
+
+        /**
+         * Updates the time display and its color.
+         */
+        function updateTimeAndColor() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            // Format time components with leading zeros
+            const hh = padZero(hours);
+            const mm = padZero(minutes);
+            const ss = padZero(seconds);
+
+            // Create the time string with a '#' prefix (e.g., "#234534")
+            const timeString = `#${hh}${mm}${ss}`;
+
+            // Create the hex color string (e.g., "#234534")
+            // This remains the same as it's the actual color value
+            const hexColor = `#${hh}${mm}${ss}`;
+
+            // Update the text content of the time display
+            timeDisplayElement.textContent = timeString;
+
+            // Update the text color of the time display
+            timeDisplayElement.style.color = hexColor;
+        }
+
+        // Update the time immediately on load
+        updateTimeAndColor();
+
+        // Set an interval to update the time and color every second (1000 milliseconds)
+        setInterval(updateTimeAndColor, 1000);
+    </script>
+</body>
+</html>
